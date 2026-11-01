@@ -18,6 +18,8 @@ import time
 import uuid
 
 sys.path.insert(0, os.getcwd())          # 실행 위치의 app 패키지를 쓴다
+if hasattr(sys.stdout, "reconfigure"):          # Windows 콘솔·리다이렉트(cp949)에서도 한글·기호가 깨지지 않게
+    sys.stdout.reconfigure(encoding="utf-8")
 
 from app.matching import Candidate                       # noqa: E402
 from app.engine.constraints import HardRules, SoftWeights  # noqa: E402
@@ -160,7 +162,8 @@ def main():
         except ImportError:
             pass
         if a.json:
-            json.dump(details, open(a.json, "w"), ensure_ascii=False, indent=2)
+            with open(a.json, "w", encoding="utf-8") as f:
+                json.dump(details, f, ensure_ascii=False, indent=2)
             print(f"  → {a.json} 저장")
     else:
         print("\n(이 엔진에는 팀 설명·조건 표·evaluate가 없습니다 — 옛 엔진)")

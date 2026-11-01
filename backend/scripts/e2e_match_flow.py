@@ -20,6 +20,8 @@ import urllib.request
 
 sys.path.insert(0, os.getcwd())
 sys.path.insert(0, os.path.join(os.getcwd(), "scripts"))
+if hasattr(sys.stdout, "reconfigure"):          # Windows 콘솔·리다이렉트(cp949)에서도 한글·기호가 깨지지 않게
+    sys.stdout.reconfigure(encoding="utf-8")
 
 from engine_demo import NOTE, make_class                      # noqa: E402
 

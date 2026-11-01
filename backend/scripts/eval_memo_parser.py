@@ -15,6 +15,8 @@ import sys
 import time
 
 sys.path.insert(0, os.getcwd())
+if hasattr(sys.stdout, "reconfigure"):          # Windows 콘솔·리다이렉트(cp949)에서도 한글·기호가 깨지지 않게
+    sys.stdout.reconfigure(encoding="utf-8")
 
 from app.engine import nl_rules                 # noqa: E402
 from app.engine.llm_rules import default_llm    # noqa: E402
@@ -77,7 +79,7 @@ def evaluate(name, parse, gold):
     print(f"  틀린 조건을 만든 메모  {wrong_made}개")
     print(f"  지원 안 되는 요구 알림 {flagged}/{need_flag}")
     for memo, g, pred, unsup in fails:
-        print(f"  ✗ {memo}\n      정답 {g}\n      결과 {pred}{'  + 적용 안 됨 ' + str(unsup) if unsup else ''}")
+        print(f"  X {memo}\n      정답 {g}\n      결과 {pred}{'  + 적용 안 됨 ' + str(unsup) if unsup else ''}")
     return {"exact": exact, "precision": p, "recall": r, "f1": f1, "wrong": wrong_made, "flagged": flagged}
 
 
